@@ -433,7 +433,8 @@ configs:
 
     # -- File containing user-defined policies and role definitions.
     # @default -- `''` (See [values.yaml])
-    policy.csv: ''
+    policy.csv: 
+      g, argocdsyncuser, role:admin
     # Policy rules are in the form:
     #  p, subject, resource, action, object, effect
     # Role definitions and bindings are in the form:
@@ -2292,7 +2293,8 @@ server:
   ## Server service configuration
   service:
     # -- Server service annotations
-    annotations: {}
+    annotations:
+      cloud.google.com/backend-config: '{"default": "argocd-server"}'
     # -- Server service labels
     labels: {}
     # -- Server service type
@@ -2483,7 +2485,15 @@ server:
       # -- Google [BackendConfig] resource, for use with the GKE Ingress Controller
       # @default -- `{}` (See [values.yaml])
       ## Ref: https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features#configuring_ingress_features_through_frontendconfig_parameters
-      backendConfig: {}
+      backendConfig:
+        healthCheck:
+          checkIntervalSec: 30
+          timeoutSec: 5
+          healthyThreshold: 1
+          unhealthyThreshold: 2
+          type: HTTP
+          requestPath: /healthz
+          port: 8080
         # iap:
         #  enabled: true
         #  oauthclientCredentials:
