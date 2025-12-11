@@ -2406,7 +2406,7 @@ server:
       networking.gke.io/managed-certificates: "argocd-server"
       networking.gke.io/frontend-config: "argocd-frontendconfig"
     # -- Defines which ingress controller will implement the resource
-    ingressClassName: "gce"
+    ingressClassName: gce
 
     # -- Argo CD server hostname
     # @default -- `""` (defaults to global.domain)
@@ -2494,7 +2494,7 @@ server:
       ## Ref: https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features#configuring_ingress_features_through_frontendconfig_parameters
       frontendConfig: 
         redirectToHttps:
-          enabled: true
+          enabled: false
 
       # Managed GKE certificate for ingress hostname
       managedCertificate:
