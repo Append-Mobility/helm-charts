@@ -2402,8 +2402,6 @@ server:
     annotations:
       kubernetes.io/ingress.class: "gce"
       kubernetes.io/ingress.allow-http: "true"
-      kubernetes.io/ingress.global-static-ip-name: "argocd-ip"
-      networking.gke.io/managed-certificates: "argocd-cert"
 
     # -- Defines which ingress controller will implement the resource
     ingressClassName: "gce"
