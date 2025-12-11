@@ -42,7 +42,7 @@ crds:
 global:
   # -- Default domain used by all components
   ## Used for ingresses, certificates, SSO, notifications, etc.
-  domain: argocd.example.com
+  domain: manage-argocd.altercabs.com
 
   # -- Runtime class name for all components
   runtimeClassName: ""
@@ -993,7 +993,7 @@ controller:
       labels: []
     service:
       # -- Metrics service type
-      type: ClusterIP
+      type: NodePort
       # -- Metrics service clusterIP. `None` makes a "headless service" (no virtual IP)
       clusterIP: ""
       # -- Metrics service annotations
@@ -2295,11 +2295,11 @@ server:
     # -- Server service labels
     labels: {}
     # -- Server service type
-    type: ClusterIP
+    type: NodePort
     # -- Server service http port for NodePort service type (only if `server.service.type` is set to "NodePort")
-    nodePortHttp: 30080
+    nodePortHttp: 32080
     # -- Server service https port for NodePort service type (only if `server.service.type` is set to "NodePort")
-    nodePortHttps: 30443
+    nodePortHttps: 32443
     # -- Server service http port
     servicePortHttp: 80
     # -- Server service https port
@@ -2401,7 +2401,9 @@ server:
     ## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/#option-1-ssl-passthrough
     annotations:
       kubernetes.io/ingress.class: "gce"
-      kubernetes.io/ingress.allow-http: "false"
+      kubernetes.io/ingress.allow-http: "true"
+      kubernetes.io/ingress.global-static-ip-name: "argocd-ip"
+      networking.gke.io/managed-certificates: "argocd-cert"
 
     # -- Defines which ingress controller will implement the resource
     ingressClassName: "gce"
