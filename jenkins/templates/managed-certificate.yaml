@@ -1,0 +1,12 @@
+{{- if .Values.controller.ingress.enabled }}
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: jenkins-managed-cert
+  namespace: {{ template "jenkins.namespace" . }}
+  labels:
+    {{- include "jenkins.labels" . | nindent 4 }}
+spec:
+  domains:
+    - {{ .Values.controller.ingress.hostName }}
+{{- end }}
