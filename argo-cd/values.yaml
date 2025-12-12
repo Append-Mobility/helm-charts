@@ -42,7 +42,7 @@ crds:
 global:
   # -- Default domain used by all components
   ## Used for ingresses, certificates, SSO, notifications, etc.
-  domain: argocd.example.com
+  domain: manage-argocd.altercabs.com
 
   # -- Runtime class name for all components
   runtimeClassName: ""
@@ -2402,6 +2402,7 @@ server:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
       nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      kubernetes.io/ingress.class: nginx
       # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
       # nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 
@@ -2422,7 +2423,7 @@ server:
     ## TLS certificate will be retrieved from a TLS secret `argocd-server-tls`
     ## You can create this secret via `certificate` or `certificateSecret` option
     tls: 
-      - secretName: argocd-tls
+      - secretName: argocd-server-tls
         hosts:
           - manage-argocd.altercabs.com
 
@@ -2507,7 +2508,7 @@ server:
       managedCertificate:
         # -- Create ManagedCertificate resource and annotations for Google Load balancer
         ## Ref: https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs
-        create: true
+        create: false
         # -- Additional domains for ManagedCertificate resource
         extraDomains: []
           # - argocd.example.com
