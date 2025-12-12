@@ -199,7 +199,8 @@ configs:
 
     # -- Enable Status Badge
     ## Ref: https://argo-cd.readthedocs.io/en/stable/user-guide/status-badge/
-    statusbadge.enabled: false
+    statusbadge.enabled: true
+    accounts.admin: apiKey
 
     # Dex configuration
     # dex.config: |
@@ -432,7 +433,8 @@ configs:
 
     # -- File containing user-defined policies and role definitions.
     # @default -- `''` (See [values.yaml])
-    policy.csv: ''
+    policy.csv: 
+      g, argocdsyncuser, role:admin
     # Policy rules are in the form:
     #  p, subject, resource, action, object, effect
     # Role definitions and bindings are in the form:
@@ -1993,7 +1995,8 @@ server:
   imagePullSecrets: []
 
   # -- Additional command line arguments to pass to Argo CD server
-  extraArgs: []
+  extraArgs: 
+    - --insecure
 
   # -- Environment variables to pass to Argo CD server
   env: []
@@ -2322,10 +2325,10 @@ server:
     externalIPs: []
     # -- Denotes if this Service desires to route external traffic to node-local or cluster-wide endpoints
     ## Ref: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
-    externalTrafficPolicy: Cluster
+    externalTrafficPolicy: ""
     # -- Used to maintain session affinity. Supports `ClientIP` and `None`
     ## Ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
-    sessionAffinity: None
+    sessionAffinity: ""
 
   ## Server metrics service configuration
   metrics:
