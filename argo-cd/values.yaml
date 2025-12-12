@@ -42,7 +42,7 @@ crds:
 global:
   # -- Default domain used by all components
   ## Used for ingresses, certificates, SSO, notifications, etc.
-  domain: manage-argocd.altercabs.com
+  domain: argocd.example.com
 
   # -- Runtime class name for all components
   runtimeClassName: ""
@@ -199,8 +199,7 @@ configs:
 
     # -- Enable Status Badge
     ## Ref: https://argo-cd.readthedocs.io/en/stable/user-guide/status-badge/
-    statusbadge.enabled: true
-    accounts.admin: apiKey
+    statusbadge.enabled: false
 
     # Dex configuration
     # dex.config: |
@@ -433,8 +432,7 @@ configs:
 
     # -- File containing user-defined policies and role definitions.
     # @default -- `''` (See [values.yaml])
-    policy.csv: 
-      g, argocdsyncuser, role:admin
+    policy.csv: ''
     # Policy rules are in the form:
     #  p, subject, resource, action, object, effect
     # Role definitions and bindings are in the form:
@@ -1995,8 +1993,7 @@ server:
   imagePullSecrets: []
 
   # -- Additional command line arguments to pass to Argo CD server
-  extraArgs: 
-    - --insecure
+  extraArgs: []
 
   # -- Environment variables to pass to Argo CD server
   env: []
@@ -2297,7 +2294,7 @@ server:
     # -- Server service labels
     labels: {}
     # -- Server service type
-    type: NodePort
+    type: ClusterIP
     # -- Server service http port for NodePort service type (only if `server.service.type` is set to "NodePort")
     nodePortHttp: 30080
     # -- Server service https port for NodePort service type (only if `server.service.type` is set to "NodePort")
@@ -2325,10 +2322,10 @@ server:
     externalIPs: []
     # -- Denotes if this Service desires to route external traffic to node-local or cluster-wide endpoints
     ## Ref: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
-    externalTrafficPolicy: ""
+    externalTrafficPolicy: Cluster
     # -- Used to maintain session affinity. Supports `ClientIP` and `None`
     ## Ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
-    sessionAffinity: ""
+    sessionAffinity: None
 
   ## Server metrics service configuration
   metrics:
@@ -2393,25 +2390,20 @@ server:
   # Argo CD server ingress configuration
   ingress:
     # -- Enable an ingress resource for the Argo CD server
-    enabled: true
+    enabled: false
     # -- Specific implementation for ingress controller. One of `generic`, `aws` or `gke`
     ## Additional configuration might be required in related configuration sections
-    controller: gke
+    controller: generic
     # -- Additional ingress labels
     labels: {}
     # -- Additional ingress annotations
     ## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/#option-1-ssl-passthrough
-    annotations: 
-      kubernetes.io/ingress.class: "gce"
-      kubernetes.io/ingress.allow-http: "false"
-      networking.gke.io/managed-certificates: argocd-managed-cert
-      networking.gke.io/v1beta1.FrontendConfig: argocd-frontend-config
-      networking.gke.io/v1beta1.BackendConfig: argocd-backend-config
+    annotations: {}
       # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
       # nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 
     # -- Defines which ingress controller will implement the resource
-    ingressClassName: "gce"
+    ingressClassName: ""
 
     # -- Argo CD server hostname
     # @default -- `""` (defaults to global.domain)
@@ -2491,8 +2483,7 @@ server:
       # -- Google [BackendConfig] resource, for use with the GKE Ingress Controller
       # @default -- `{}` (See [values.yaml])
       ## Ref: https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features#configuring_ingress_features_through_frontendconfig_parameters
-      backendConfig:
-        name: argocd-backend-config
+      backendConfig: {}
         # iap:
         #  enabled: true
         #  oauthclientCredentials:
@@ -2501,8 +2492,7 @@ server:
       # -- Google [FrontendConfig] resource, for use with the GKE Ingress Controller
       # @default -- `{}` (See [values.yaml])
       ## Ref: https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features#configuring_ingress_features_through_frontendconfig_parameters
-      frontendConfig:
-        name: argocd-frontend-config
+      frontendConfig: {}
         # redirectToHttps:
         #   enabled: true
         #   responseCodeName: RESPONSE_CODE
@@ -2511,7 +2501,7 @@ server:
       managedCertificate:
         # -- Create ManagedCertificate resource and annotations for Google Load balancer
         ## Ref: https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs
-        create: false
+        create: true
         # -- Additional domains for ManagedCertificate resource
         extraDomains: []
           # - argocd.example.com
