@@ -53,7 +53,7 @@ OpenShift:
 
 # Set the chart to use the latest released SonarQube Community Build
 community:
-  enabled: true
+  enabled: false
   buildNumber: "25.9.0.112764"
 
 image:
@@ -91,7 +91,7 @@ elasticsearch:
   bootstrapChecks: true
 
 service:
-  type: NodePort
+  type: ClusterIP
   externalPort: 9000
   internalPort: 9000
   labels:
@@ -159,25 +159,22 @@ httproute:
   #     port: 8080
 
 ingress:
-  enabled: true
+  enabled: false
   # Used to create an Ingress record.
   hosts:
-    - name: manage-sonarqube.altercabs.com
+    - name: sonarqube.your-org.com
       # Different clouds or configurations might need /* as the default path
-      path: /*
+      # path: /
       # For additional control over serviceName and servicePort
       # serviceName: someService
       # servicePort: somePort
       # the pathType can be one of the following values: Exact|Prefix|ImplementationSpecific(default)
-      pathType: ImplementationSpecific
-  annotations:
-    kubernetes.io/ingress.class: "gce"
-    kubernetes.io/ingress.allow-http: "true"
-    networking.gke.io/managed-certificates: "sonarqube-cert"
-    networking.gke.io/v1beta1.FrontendConfig: "sonarqube-frontend"
+      # pathType: ImplementationSpecific
+  annotations: {}
+  # kubernetes.io/tls-acme: "true"
 
   # Set the ingressClassName on the ingress record
-  ingressClassName: gce
+  # ingressClassName: nginx
 
 # Additional labels for Ingress manifest file
   # labels:
@@ -433,7 +430,7 @@ jvmCeOpts: ""
 
 ## a monitoring passcode needs to be defined in order to get reasonable probe results
 # not setting the monitoring passcode will result in a deployment that will never be ready
-monitoringPasscode: "s0narQub3_M0nitoring"
+# monitoringPasscode: "define_it"
 # Alternatively, you can define the passcode loading it from an existing secret specifying the right key
 # monitoringPasscodeSecretName: "pass-secret-name"
 # monitoringPasscodeSecretKey: "pass-key"
