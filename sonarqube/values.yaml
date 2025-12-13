@@ -159,32 +159,25 @@ httproute:
   #     port: 8080
 
 ingress:
-  enabled: false
+  enabled: true
   # Used to create an Ingress record.
   hosts:
-    - name: sonarqube.your-org.com
-      # Different clouds or configurations might need /* as the default path
-      # path: /
-      # For additional control over serviceName and servicePort
-      # serviceName: someService
-      # servicePort: somePort
-      # the pathType can be one of the following values: Exact|Prefix|ImplementationSpecific(default)
-      # pathType: ImplementationSpecific
-  annotations: {}
-  # kubernetes.io/tls-acme: "true"
+    - name: manage-sonarqube.altercabs.com
+      path: /
+      pathType: Prefix
+  annotations:
+    networking.gke.io/managed-certificates: "sonarqube-cert"
+    networking.gke.io/v1beta1.FrontendConfig: "sonarqube-frontend"
+    kubernetes.io/ingress.class: "gce"
 
   # Set the ingressClassName on the ingress record
-  # ingressClassName: nginx
+  ingressClassName: "gce"
 
 # Additional labels for Ingress manifest file
-  # labels:
-  #  traffic-type: external
-  #  traffic-type: internal
+  labels: {}
   tls: []
-  # Secrets must be manually created in the namespace. To generate a self-signed certificate (and private key) and then create the secret in the cluster please refer to official documentation available at https://kubernetes.github.io/ingress-nginx/user-guide/tls/#tls-secrets
-  # - secretName: chart-example-tls
-  #   hosts:
-  #     - chart-example.local
+  # TLS is handled by GCP ManagedCertificate
+
 
 # Affinity for pod assignment
 # Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
@@ -684,10 +677,10 @@ extraConfig:
   secrets: []
   configmaps: []
 
-# setAdminPassword:
+setAdminPassword:
 # The values can be set to define the current and the (new) custom admin passwords at the startup (the username will remain "admin")
-#  newPassword: AdminAdmin_12$
-#  currentPassword: admin
+  newPassword: "devops@altercabs"
+  currentPassword: admin
 # The above values can be also provided by a secret that contains "password" and "currentPassword" as keys. You can generate such a secret in your cluster
 # using "kubectl create secret generic admin-password-secret-name --from-literal=password=admin --from-literal=currentPassword=admin"
 #  passwordSecretName: ""
