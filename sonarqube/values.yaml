@@ -91,7 +91,7 @@ elasticsearch:
   bootstrapChecks: true
 
 service:
-  type: ClusterIP
+  type: NodePort
   externalPort: 9000
   internalPort: 9000
   labels:
@@ -251,7 +251,7 @@ livenessProbe:
 startupProbe:
   initialDelaySeconds: 30
   periodSeconds: 10
-  failureThreshold: 24
+  failureThreshold: 60  # Allow up to 10 minutes for startup (60 * 10s = 600s)
   # Note that timeoutSeconds was not respected before Kubernetes 1.20 for exec probes
   timeoutSeconds: 1
   # If an ingress *path* other than the root (/) is defined, it should be reflected here
