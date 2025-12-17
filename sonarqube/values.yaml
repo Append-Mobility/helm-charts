@@ -191,7 +191,7 @@ affinity: {}
 tolerations:
   - key: "pool"
     operator: "Equal"
-    value: "ci-pool"
+    value: "ci"
     effect: "NoSchedule"
 #  - key: "sonarqube"
 #    operator: "Equal"
@@ -203,7 +203,7 @@ tolerations:
 # add a label to a node with the following command
 # kubectl label node <node> sonarqube=true
 nodeSelector:
-  pool: ci-pool
+  pool: ci
 #  sonarqube: "true"
 
 # hostAliases allows the modification of the hosts file inside a container
@@ -544,6 +544,13 @@ jdbcOverwrite:
 postgresql:
   # Enable to deploy the bitnami PostgreSQL chart
   enabled: true
+  nodeSelector:
+    pool: ci
+  tolerations:
+    - key: "pool"
+      operator: "Equal"
+      value: "ci"
+      effect: "NoSchedule"
   ## postgresql Chart global settings
   # global:
   #   imageRegistry: ''
