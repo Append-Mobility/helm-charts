@@ -36,3 +36,21 @@ backend:
   replicas: 0
 write:
   replicas: 0
+
+chunksCache:
+  nodeSelector:
+    cloud.google.com/gke-nodepool: system-pool
+  tolerations:
+    - key: "pool"
+      operator: "Equal"
+      value: "system"
+      effect: "NoSchedule"
+
+resultsCache:
+  nodeSelector:
+    cloud.google.com/gke-nodepool: system-pool
+  tolerations:
+    - key: "pool"
+      operator: "Equal"
+      value: "system"
+      effect: "NoSchedule"
