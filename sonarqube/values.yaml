@@ -551,7 +551,6 @@ postgresql:
     tolerations:
       - key: "pool"
         operator: "Exists"
-        effect: "NoSchedule"
   ## postgresql Chart global settings
   # global:
   #   imageRegistry: ''
