@@ -1,0 +1,27 @@
+alertmanager:
+  enabled: true
+  alertmanagerSpec:
+    nodeSelector:
+      cloud.google.com/gke-nodepool: system-pool
+
+grafana:
+  enabled: false # We are installing a dedicated Grafana instance
+
+prometheus:
+  prometheusSpec:
+    nodeSelector:
+      cloud.google.com/gke-nodepool: system-pool
+    retention: 15d
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: standard
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 50Gi
+
+prometheus-node-exporter:
+  nodeSelector: {}
+  tolerations:
+    - operator: Exists

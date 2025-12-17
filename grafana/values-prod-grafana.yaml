@@ -1,0 +1,57 @@
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.allow-http: "true"
+  hosts:
+    - grafana.altercabs.com
+  path: /*
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus (Prod)
+        type: prometheus
+        url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+        access: proxy
+        isDefault: true
+        jsonData:
+          timeInterval: 30s
+
+      - name: Loki (Prod)
+        type: loki
+        url: http://loki-gateway.monitoring.svc.cluster.local
+        access: proxy
+        jsonData:
+          maxLines: 1000
+
+      - name: Prometheus (Dev)
+        type: prometheus
+        url: https://prometheus.dev.altercabs.com
+        access: proxy
+        jsonData:
+          timeInterval: 30s
+
+      - name: Loki (Dev)
+        type: loki
+        url: https://loki.dev.altercabs.com
+        access: proxy
+        jsonData:
+          maxLines: 1000
+
+persistence:
+  enabled: true
+  storageClassName: standard
+  size: 10Gi
+  accessModes:
+    - ReadWriteOnce
+
+adminUser: admin
+adminPassword: "devops@altercabs" # Change this!
+
+service:
+  type: NodePort
+
+nodeSelector:
+  cloud.google.com/gke-nodepool: system-pool

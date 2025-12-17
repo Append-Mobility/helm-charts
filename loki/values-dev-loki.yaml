@@ -1,0 +1,22 @@
+loki:
+  auth_enabled: false
+  commonConfig:
+    replication_factor: 1
+  storage:
+    type: filesystem
+
+gateway:
+  ingress:
+    enabled: true
+    ingressClassName: "gce"
+    hosts:
+      - host: loki.dev.altercabs.com
+        paths:
+          - path: /
+            pathType: Prefix
+    annotations:
+      kubernetes.io/ingress.class: "gce"
+      kubernetes.io/ingress.allow-http: "true"
+
+deploymentMode: SingleBinary
+
