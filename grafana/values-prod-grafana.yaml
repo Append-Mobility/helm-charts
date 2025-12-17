@@ -48,7 +48,7 @@ persistence:
     - ReadWriteOnce
 
 adminUser: admin
-adminPassword: "devops@altercabs" # Change this!
+adminPassword: "devops@altercabs"
 
 service:
   type: NodePort
