@@ -55,3 +55,9 @@ service:
 
 nodeSelector:
   cloud.google.com/gke-nodepool: system-pool
+
+tolerations:
+  - key: "pool"
+    operator: "Equal"
+    value: "system"
+    effect: "NoSchedule"
