@@ -5,7 +5,7 @@ ingress:
     kubernetes.io/ingress.allow-http: "true"
   hosts:
     - grafana.altercabs.com
-  path: /*
+  path: /
 
 datasources:
   datasources.yaml:
