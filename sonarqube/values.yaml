@@ -188,7 +188,11 @@ affinity: {}
 # taint a node with the following command to mark it as not schedulable for new pods
 # kubectl taint nodes <node> sonarqube=true:NoSchedule
 # The following statement will tolerate this taint and as such reverse a node for sonarqube
-tolerations: []
+tolerations:
+  - key: "pool"
+    operator: "Equal"
+    value: "ci-pool"
+    effect: "NoSchedule"
 #  - key: "sonarqube"
 #    operator: "Equal"
 #    value: "true"
@@ -198,7 +202,8 @@ tolerations: []
 # Ref: https://kubernetes.io/docs/user-guide/node-selection/
 # add a label to a node with the following command
 # kubectl label node <node> sonarqube=true
-nodeSelector: {}
+nodeSelector:
+  pool: ci-pool
 #  sonarqube: "true"
 
 # hostAliases allows the modification of the hosts file inside a container
