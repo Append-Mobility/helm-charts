@@ -193,10 +193,6 @@ tolerations:
     operator: "Equal"
     value: "ci"
     effect: "NoSchedule"
-  - key: "env"
-    operator: "Equal"
-    value: "prod"
-    effect: "NoSchedule"
 #  - key: "sonarqube"
 #    operator: "Equal"
 #    value: "true"
@@ -547,18 +543,16 @@ jdbcOverwrite:
 ## ref: https://github.com/bitnami/charts/blob/master/bitnami/postgresql/README.md
 postgresql:
   # Enable to deploy the bitnami PostgreSQL chart
+  # Enable to deploy the bitnami PostgreSQL chart
   enabled: true
-  nodeSelector:
-    pool: ci
-  tolerations:
-    - key: "pool"
-      operator: "Equal"
-      value: "ci"
-      effect: "NoSchedule"
-    - key: "env"
-      operator: "Equal"
-      value: "prod"
-      effect: "NoSchedule"
+  primary:
+    nodeSelector:
+      pool: ci
+    tolerations:
+      - key: "pool"
+        operator: "Equal"
+        value: "ci"
+        effect: "NoSchedule"
   ## postgresql Chart global settings
   # global:
   #   imageRegistry: ''
