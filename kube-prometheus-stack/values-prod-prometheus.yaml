@@ -3,6 +3,11 @@ alertmanager:
   alertmanagerSpec:
     nodeSelector:
       cloud.google.com/gke-nodepool: system-pool
+    tolerations:
+      - key: "pool"
+        operator: "Equal"
+        value: "system"
+        effect: "NoSchedule"
 
 grafana:
   enabled: false # We are installing a dedicated Grafana instance
@@ -11,6 +16,11 @@ prometheus:
   prometheusSpec:
     nodeSelector:
       cloud.google.com/gke-nodepool: system-pool
+    tolerations:
+      - key: "pool"
+        operator: "Equal"
+        value: "system"
+        effect: "NoSchedule"
     retention: 15d
     storageSpec:
       volumeClaimTemplate:
