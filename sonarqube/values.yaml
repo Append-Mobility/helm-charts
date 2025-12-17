@@ -193,6 +193,10 @@ tolerations:
     operator: "Equal"
     value: "ci"
     effect: "NoSchedule"
+  - key: "env"
+    operator: "Equal"
+    value: "prod"
+    effect: "NoSchedule"
 #  - key: "sonarqube"
 #    operator: "Equal"
 #    value: "true"
@@ -550,6 +554,10 @@ postgresql:
     - key: "pool"
       operator: "Equal"
       value: "ci"
+      effect: "NoSchedule"
+    - key: "env"
+      operator: "Equal"
+      value: "prod"
       effect: "NoSchedule"
   ## postgresql Chart global settings
   # global:
