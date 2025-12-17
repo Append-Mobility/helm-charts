@@ -550,8 +550,7 @@ postgresql:
       pool: ci
     tolerations:
       - key: "pool"
-        operator: "Equal"
-        value: "ci"
+        operator: "Exists"
         effect: "NoSchedule"
   ## postgresql Chart global settings
   # global:
